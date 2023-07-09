@@ -1,0 +1,76 @@
+function frequencyAnalysis(numbers) {
+  const counts = {};
+  for (let i = 0; i < numbers.length; i++) {
+    const num = numbers[i];
+    counts[num] = counts[num] ? counts[num] + 1 : 1;
+  }
+  return counts;
+}
+
+const lotteryNumbers = [3, 8, 19, 27, 34, 45];
+const counts = frequencyAnalysis(lotteryNumbers);
+console.log(counts); // { 3: 1, 8: 1, 19: 1, 27: 1, 34: 1, 45: 1 }
+
+// Define the URL of the web page to fetch
+
+const url = "http://www.powerball.com/games/home";
+
+// Fetch the HTML content of the web page
+fetch(url)
+  .then(response => response.text())
+  .then(htmlContent => {
+    // Extract all numbers using a regular expression
+    const numbers = htmlContent.match(/\d+/g);
+
+    // Log the extracted numbers to the console
+    console.log(numbers);
+  })
+  .catch(error => console.error(error));
+
+  //----------------------------------------- /*This error is likely occurring because you are trying to use the fetch function in a Node.js environment, which does not support the fetch function by default. The fetch function is part of the web API, which is only available in web browsers.To use the fetch function in Node.js, you can use a package like node-fetch. Here is an example of how you can use it: */
+  fetch('ttp://www.powerball.com/games/home')
+  .then(response => response.text())
+  .then(html => {
+    // Extract all numbers from the HTML content
+    const numbers = html.match(/\d+/g).map(Number);
+
+    // Create a new ul element to hold the numbers
+    const ul = document.createElement('ul');
+
+    // Append each number as a new li element to the ul
+    numbers.forEach(number => {
+      const li = document.createElement('li');
+      li.textContent = number;
+      ul.appendChild(li);
+    });
+
+    // Append the ul to the document body
+    document.body.appendChild(ul);
+  });
+
+  //--------------------------------------------
+  //The error you're receiving might be due to a cross-origin resource sharing (CORS) issue. It means that the server that hosts the web page you're trying to fetch is not allowing requests from your domain.
+  fetch('http://www.powerball.com/games/home')
+  .then(response => response.text())
+  .then(html => {
+    // Extract all numbers from the web page
+    const numbers = [...new DOMParser().parseFromString(html, 'text/html').querySelectorAll('body *')]
+      .map(node => node.innerText)
+      .join('')
+      .match(/\d+/g)
+      .map(Number);
+
+    // Create a new ul element to hold the numbers
+    const ul = document.createElement('ul');
+
+    // Append each number as a new li element to the ul
+    numbers.forEach(number => {
+      const li = document.createElement('li');
+      li.textContent = number;
+      ul.appendChild(li);
+    });
+
+    // Append the ul to the document body
+    document.body.appendChild(ul);
+  })
+  .catch(error => console.error(error));
